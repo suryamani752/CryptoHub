@@ -15,20 +15,19 @@ export const CryptoProvider = ({ children }) => {
   const fetchCryptoCoin = async () => {
     try {
       setLoading(true);
-      console.log(`Fetching coins with sortBy: ${sortBy}`); // Debug log
+      // console.log(`Fetching coins with sortBy: ${sortBy}`);
       const response = await axios.get(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=INR&order=${sortBy}&per_page=100&page=1&sparkline=false`
       );
       let data = response.data;
-      // Fallback client-side sorting for market_cap_asc
       if (sortBy === "market_cap_asc") {
         data = [...data].sort((a, b) => a.market_cap - b.market_cap);
       }
-      console.log("API response:", data.slice(0, 5)); // Debug log: Log first 5 coins
+      // console.log("API response:", data.slice(0, 5)); 
       setCryptoCoin(data);
       setError("");
     } catch (error) {
-      console.error("Error fetching crypto coins:", error); // Debug log
+      // console.error("Error fetching crypto coins:", error);
       setError("Error fetching crypto coins: " + error.message);
     } finally {
       setLoading(false);

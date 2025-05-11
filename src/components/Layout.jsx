@@ -47,12 +47,12 @@ const Layout = ({ children }) => {
   };
 
   const toggleLanguage = (lang) => {
-    console.log("Changing language to:", lang); // Debug log
+    // console.log("Changing language to:", lang); 
     i18n.changeLanguage(lang);
   };
 
   const toggleMenu = () => {
-    console.log("Toggling menu, isMenuOpen:", !isMenuOpen); // Debug log
+    // console.log("Toggling menu, isMenuOpen:", !isMenuOpen);
     setIsMenuOpen(!isMenuOpen);
   };
 
