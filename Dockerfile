@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 
 #-----------------stage 2 --------------------
-FROM node:18-apline AS Development
+FROM node:18-alpine AS Development
 WORKDIR /app
 COPY --from=builder /app /app
 EXPOSE 5173
