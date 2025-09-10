@@ -7,20 +7,14 @@ pipeline{
     }
     
     stages{
-        stage("1. PUll Code"){
-            steps{
-                git branch: "main", url: 'https://github.com/suryamani752/CryptoHub.git'
-                echo "Code Cloned Successfully"
-            }
-        }
-        stage("2. OWASP Dependency Check"){
+        stage(" OWASP Dependency Check"){
             steps{
                 echo "Running OWASP Dependency Check...."
                 dependencyCheck additionalArguments: '--scan . --format ALL --prettyPrint', odcInstallation: 'OWASP'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
-        stage("3. SonarQube Quality Gate Analysis"){
+        stage("SonarQube Quality Gate Analysis"){
             steps{
                 withSonarQubeEnv('MySonarQube'){
                     sh '''
@@ -35,19 +29,19 @@ pipeline{
                 }
             }
         }
-        stage('4. Build Docker Image'){
+        stage(' Build Docker Image'){
             steps{
                 script{
                     docker.build("${ECR_REPOSITORY}:${IMAGE_TAG}",".")
                 }
             }
         }
-        stage('5. Scan Image with Trivy'){
+        stage(' Scan Image with Trivy'){
             steps{
                 sh 'trivy image ${ECR_REPOSITORY}:${IMAGE_TAG}'
             }
         }
-        stage('6. Push Image to ECR'){
+        stage(' Push Image to ECR'){
             steps{
                 script{
                     docker.withRegistry("https://${ECR_REGISTRY}", 'ecr:ap-south-1:aws-ecr-credentials') {
@@ -56,7 +50,7 @@ pipeline{
                 }
             }
         }
-        stage('7. Deploy'){
+        stage(' Deploy'){
             steps{
                 script{
                     docker.withRegistry("https://${ECR_REGISTRY}", 'ecr:ap-south-1:aws-ecr-credentials'){
